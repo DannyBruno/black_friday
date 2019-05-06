@@ -19,8 +19,8 @@ from dataset import load_data
 def select_features(df):
 
     # 70/30 train/test.
-    X_train, X_test = train_test_split(df.iloc[:, ['Gender', 'Age', 'Occupation', 'City_Category', 'Marital_Status']], test_size=.3)
-    y_train, y_test = train_test_split(df.iloc[:, 'Purchase'], test_size=.3)
+    X_train, X_test = train_test_split(df[['Gender', 'Age', 'Occupation', 'City_Category', 'Marital_Status']], test_size=.3)
+    y_train, y_test = train_test_split(df[['Purchase']], test_size=.3)
 
     return X_train, X_test, y_train, y_test
 
@@ -60,3 +60,12 @@ def poly_regression(df, degree):
 if __name__ == '__main__':
     poly_regression(load_data(), 1)
 
+
+
+"""
+Findings:
+
+Improves as we increase regression degree. Indicates that more complex estimator would help (networks, boosting etc.).
+We initially find that city category is a big predictor. What if we split for category?
+
+"""

@@ -36,6 +36,10 @@ CITY_TABLE = {
 
 
 def clean_data(row_data):
+    """
+    Clean up data.
+
+    """
     # Gender.
     gender = GENDER_TABLE[row_data['Gender']]
 
@@ -55,14 +59,13 @@ def clean_data(row_data):
 
 
 
-
-"""
-Data imputation methods.
-"""
 def impute_missing_vals(method, row_data):
+    """
+    Data imputation methods.
+    """
     # Try several methods for imputation.
 
-    # Method 0: Replace Nans w/ 0s.
+    # Method 0: Replace Nans w/ -1s.
     if method == 0:
         row_data.fillna(-1)
 
@@ -93,11 +96,9 @@ def load_data():
 
     df = df.drop(columns=['Product_ID'])
 
-    df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
+    df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = \
+        df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
 
 
-
-
-    print(df.dtypes)
 
     return df
