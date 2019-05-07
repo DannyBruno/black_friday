@@ -65,7 +65,7 @@ def impute_missing_vals(method, row_data):
     """
     # Try several methods for imputation.
 
-    # Method 0: Replace Nans w/ -1s.
+    # Method 0: Replace Nans w/ -2s.
     if method == 0:
         row_data.fillna(-1)
 
@@ -86,18 +86,28 @@ def impute_missing_vals(method, row_data):
 
 def load_data():
     # Import data.
-    df = pd.read_csv("data/BlackFriday.csv", nrows=10000)
+    df = pd.read_csv("data/BlackFriday.csv", nrows=50000) #nrows=10000
+
+    # Confirm columns with null values.
+    print(df.isnull().sum())
+
+    # Fill in missing values with -2s.
+    df[['Product_Category_2']] = df[['Product_category_2']].fillna(-2.0).astype(float)
+    df[['Product_Category_3']] = df[['Product_category_3']].fillna(-2.0).astype(float)
+
+    # Remove categories that have few entries.
+    # Maybe come back to this.
+
 
     df[['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(clean_data(x)), axis=1)
     print("Gender, Age, and Current Stay Corrected!")
 
-    df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(impute_missing_vals(0, x)), axis=1)
-    print("Missing Values Imputed!")
+    #df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(impute_missing_vals(0, x)), axis=1)
+    #print("Missing Values Imputed!")
 
-    df = df.drop(columns=['Product_ID'])
 
-    df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = \
-        df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
+    #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = \
+        #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
 
 
 

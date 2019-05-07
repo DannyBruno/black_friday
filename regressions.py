@@ -36,6 +36,7 @@ def plot_results(y_test, y_predicted):
     plt.ylabel("Purchase Amount")
     plt.title("Linear Regression Results on Gender, Age, Occup., City Cat., M. Status")
     plt.legend(loc='best')
+    #plt.savefig('plots/poly_regression.png')
     plt.show()
 
 
@@ -55,6 +56,7 @@ def poly_regression(df, degree):
     print(regress.coef_)
 
     plot_results(y_test, y_predicted)
+
 
 
 if __name__ == '__main__':
