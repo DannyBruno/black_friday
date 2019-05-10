@@ -4,6 +4,7 @@ Initial Regressions and Visualizations.
 
 """
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -12,8 +13,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib as mpl
 mpl.style.use('seaborn')
-
-from dataset import load_data
 
 
 def select_features(df):
@@ -60,7 +59,7 @@ def poly_regression(df, degree):
 
 
 if __name__ == '__main__':
-    poly_regression(load_data(), 1)
+    poly_regression(pd.read_csv("data/BlackFriday.csv", nrows=50000), 1)
 
 
 

@@ -5,13 +5,12 @@ Initial data analysis.
 """
 
 import numpy as np
+import pandas as pd
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib as mpl
 mpl.style.use('seaborn')
-
-from dataset import load_data
 
 
 def univariate_analysis(df):
@@ -117,7 +116,7 @@ def bivariate_analysis(df):
 
 
 if __name__ == "__main__":
-    df = load_data()
+    df = pd.read_csv("data/BlackFriday.csv", nrows=50000)
     #univariate_analysis(df)
-    #correlation(df)
+    #correlation(df)s
     bivariate_analysis(df)

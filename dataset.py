@@ -81,7 +81,8 @@ def impute_missing_vals(method, row_data):
 
 
 
-
+def export(df):
+    df.to_csv('data/BlackFriday_Modified.csv', index=False)
 
 
 def load_data():
@@ -92,8 +93,8 @@ def load_data():
     print(df.isnull().sum())
 
     # Fill in missing values with -2s.
-    df[['Product_Category_2']] = df[['Product_category_2']].fillna(-2.0).astype(float)
-    df[['Product_Category_3']] = df[['Product_category_3']].fillna(-2.0).astype(float)
+    df[['Product_Category_2']] = df[['Product_Category_2']].fillna(-2.0).astype(float)
+    df[['Product_Category_3']] = df[['Product_Category_3']].fillna(-2.0).astype(float)
 
     # Remove categories that have few entries.
     # Maybe come back to this.
@@ -109,6 +110,9 @@ def load_data():
     #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = \
         #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
 
+    print("Exporting!")
+    export(df)
 
 
-    return df
+if __name__ == '__main__':
+    load_data()
