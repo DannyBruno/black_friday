@@ -96,19 +96,15 @@ def load_data():
     df[['Product_Category_2']] = df[['Product_Category_2']].fillna(-2.0).astype(float)
     df[['Product_Category_3']] = df[['Product_Category_3']].fillna(-2.0).astype(float)
 
-    # Remove categories that have few entries.
-    # Maybe come back to this.
-
 
     df[['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(clean_data(x)), axis=1)
     print("Gender, Age, and Current Stay Corrected!")
 
+    # Remove categories that have few entries.
+    # Maybe come back to this.
     #df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(impute_missing_vals(0, x)), axis=1)
     #print("Missing Values Imputed!")
 
-
-    #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']] = \
-        #df[['Gender', 'Age', 'Occupation', 'City_Category', 'Stay_In_Current_City_Years', 'Marital_Status']].apply(pd.to_numeric, errors='coerce')
 
     print("Exporting!")
     export(df)

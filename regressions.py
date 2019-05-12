@@ -1,6 +1,6 @@
 """
 
-Initial Regressions and Visualizations.
+Initial Regressions and Visualizations. Expanded upon further in model.py, analysis.py.
 
 """
 import numpy as np
@@ -33,7 +33,7 @@ def plot_results(y_test, y_predicted):
 
     plt.xlabel("Customer")
     plt.ylabel("Purchase Amount")
-    plt.title("Linear Regression Results on Gender, Age, Occup., City Cat., M. Status")
+    plt.title("Model Results")
     plt.legend(loc='best')
     #plt.savefig('plots/poly_regression.png')
     plt.show()
