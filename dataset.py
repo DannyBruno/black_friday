@@ -87,7 +87,7 @@ def export(df):
 
 def load_data():
     # Import data.
-    df = pd.read_csv("data/BlackFriday.csv", nrows=50000) #nrows=10000
+    df = pd.read_csv("data/BlackFriday.csv") #nrows=10000
 
     # Confirm columns with null values.
     print(df.isnull().sum())

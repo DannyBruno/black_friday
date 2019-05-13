@@ -26,7 +26,7 @@ def select_features(df):
 
 def plot_results(y_test, y_predicted):
 
-    print(f'Avg. distance between predictions and real values: {np.mean(np.abs(y_test - y_predicted))}')
+    #print(f'Avg. distance between predictions and real values: {np.mean(np.abs(y_test - y_predicted))}')
 
     plt.plot(range(y_test.shape[0]), y_test, label="Real Purchase Amount")
     plt.plot(range(y_predicted.shape[0]), y_predicted, label="Predicted Purchase Amount")
