@@ -119,7 +119,7 @@ def modelfit(alg, data, features, target):
 if __name__ == '__main__':
 
     # Read in data.
-    df = pd.read_csv("data/BlackFriday_Modified.csv", nrows=50000)
+    df = pd.read_csv("data/BlackFriday_Modified_Interp.csv")
     features = df.columns.drop(['Purchase', 'Product_ID', 'User_ID'])
 
     """
@@ -152,29 +152,32 @@ if __name__ == '__main__':
     plt.show()
     
     # Poly. regression found in other file. Performs similarly poorly.
+    """
 
     # Decision Tree Regressor. (Now testing more complex models.) (These all need some hyperparameter tuning.)
     print("Decision Tree Regressor")
     DT = DecisionTreeRegressor(max_depth=15, min_samples_leaf=100)
     modelfit(DT, df, features, target)
 
+    """
     # Random Forest Regressor.
     print("Random Forrest Regressor")
     RF = RandomForestRegressor(n_estimators=20, max_depth=15)
     modelfit(RF, df, features, target)
-    """
 
-    # Simple Network.
+    
+    # Simple Network. # No one-hot encoding so this was dumb to try. Also explains poor performance in regressions.
     network = build_network()
     print("Simple Network")
     modelfit(network, df, features, target)
     #plot_model(network, to_file='plots/model.png')
+    """
 
     """
     TODO: 
-        - Add a network. 
+        /- Add a network. 
         - Do more sophisticated feature selection (Network and KNN feature imputation + more hotencoding for categorical).
-        - Actually use the cross-validation for hyper-parameter tuning. 
+        /- Actually use the cross-validation for hyper-parameter tuning. 
     """
 
     """

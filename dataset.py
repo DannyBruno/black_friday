@@ -9,6 +9,11 @@ import numpy as np
 from tqdm import tqdm
 tqdm.pandas()
 
+from sklearn.tree import DecisionTreeClassifier
+
+from interpolation import interpolation_model_fit, interpolation_tree
+
+
 # Tables.
 AGE_TABLE = {
     "0-17": 0,
@@ -67,7 +72,7 @@ def impute_missing_vals(method, row_data):
 
     # Method 0: Replace Nans w/ -2s.
     if method == 0:
-        row_data.fillna(-1)
+        row_data.fillna(-2)
 
     # Method 1: Predict using Network.
     elif method == 1:
@@ -82,7 +87,8 @@ def impute_missing_vals(method, row_data):
 
 
 def export(df):
-    df.to_csv('data/BlackFriday_Modified.csv', index=False)
+    #df.to_csv('data/BlackFriday_Modified.csv', index=False)
+    df.to_csv('data/BlackFriday_Modified_Interp.csv', index=False)
 
 
 def load_data():
@@ -100,10 +106,16 @@ def load_data():
     df[['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(clean_data(x)), axis=1)
     print("Gender, Age, and Current Stay Corrected!")
 
-    # Remove categories that have few entries.
-    # Maybe come back to this.
-    #df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(impute_missing_vals(0, x)), axis=1)
-    #print("Missing Values Imputed!")
+    # Attempt to interpolate with tree.
+
+    tree_two = DecisionTreeClassifier(max_depth=15, min_samples_leaf=50)
+    tree_three = DecisionTreeClassifier(max_depth=15, min_samples_leaf=50)
+
+    interpolation_model_fit(df, tree_two, tree_three)
+
+    df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(
+        lambda row: pd.Series(interpolation_tree(row, tree_two, tree_three)), axis=1)
+    print("Missing Values Imputed!")
 
 
     print("Exporting!")
