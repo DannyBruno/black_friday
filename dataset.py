@@ -11,7 +11,7 @@ tqdm.pandas()
 
 from sklearn.tree import DecisionTreeClassifier
 
-from interpolation import interpolation_model_fit, interpolation_tree
+from interpolation import interpolation_model_fit, interpolation_tree, interpolation_mode_setup, interpolation_mode
 
 
 # Tables.
@@ -88,7 +88,8 @@ def impute_missing_vals(method, row_data):
 
 def export(df):
     #df.to_csv('data/BlackFriday_Modified.csv', index=False)
-    df.to_csv('data/BlackFriday_Modified_Interp.csv', index=False)
+    #df.to_csv('data/BlackFriday_Modified_Interp.csv', index=False)
+    df.to_csv('data/BlackFriday_Modified_Interp_Mode.csv', index=False)
 
 
 def load_data():
@@ -106,6 +107,7 @@ def load_data():
     df[['Gender', 'Age', 'City_Category', 'Stay_In_Current_City_Years']] = df.iloc[:, :].progress_apply(lambda x: pd.Series(clean_data(x)), axis=1)
     print("Gender, Age, and Current Stay Corrected!")
 
+    '''
     # Attempt to interpolate with tree.
 
     tree_two = DecisionTreeClassifier(max_depth=15, min_samples_leaf=50)
@@ -115,6 +117,17 @@ def load_data():
 
     df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(
         lambda row: pd.Series(interpolation_tree(row, tree_two, tree_three)), axis=1)
+    '''
+    # Attempt to interpolate with mode.
+
+    modes_two = {}
+    modes_three = {}
+
+    modes_two, modes_three = interpolation_mode_setup(df, modes_two, modes_three)
+
+    df[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']] = df.iloc[:, :].progress_apply(
+        lambda row: pd.Series(interpolation_mode(row, modes_two, modes_three)), axis=1)
+
     print("Missing Values Imputed!")
 
 

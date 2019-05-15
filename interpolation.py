@@ -5,6 +5,7 @@ Attempting interpolation of product category.
 """
 import pandas as pd
 import numpy as np
+from scipy.stats import mode
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -117,15 +118,46 @@ def interpolation_tree(row, tree_two, tree_three):
     return row[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']]
 
 
+def interpolation_mode_setup(df, modes_two, modes_three):
 
-def interpolation_mode(df, modes_two, modes_three):
+    # Select those with all 3 entries.
+    data = df[
+        (df['Product_Category_1'] != -2) & (df['Product_Category_2'] != -2) & (df['Product_Category_3'] != -2)]
+
+    # Loop through, add to appropriate maps if doesn't exist already.
+    for idx, row in df.iterrows():
+
+        if (row['Product_Category_1'], row['Product_Category_3']) not in modes_two.keys():
+            # If doesn't exists already select all rows that match in 1 and 3. Find the Mode of 2 in those rows.
+            modes_two[(row['Product_Category_1'], row['Product_Category_3'])] = mode(
+                df[(df['Product_Category_1'] == row['Product_Category_1'])
+                   & (df['Product_Category_3'] == row['Product_Category_3'])]['Product_Category_2']
+            )[0][0]
+        elif (row['Product_Category_1'], row['Product_Category_2']) not in modes_three.keys():
+            modes_three[(row['Product_Category_1'], row['Product_Category_2'])] = mode(
+                df[(df['Product_Category_1'] == row['Product_Category_1'])
+                   & (df['Product_Category_2'] == row['Product_Category_2'])]['Product_Category_3']
+            )[0][0]
+
+    return modes_two, modes_three
+
+
+def interpolation_mode(row, modes_two, modes_three):
     '''
-    TODO: Compute missing value by taking mode in columnn with each.
+    TODO: Compute missing value by taking mode in column with each.
     Given product categories 1 & 2 predict the 3rd by selecting the entries that include values in all 3 fields,
     and that match in category 1 & 2. Then assigns 3 to the mode of category 3 for those entries.
     Modes stores a hash table of [cat1, cat2] -> mode cat3 in entries that match on cat1 and cat2.
     '''
-    return [0, 0, 0]
+
+    if row['Product_Category_2'] == -2 and row['Product_Category_3'] != -2 and\
+            (row['Product_Category_1'], row['Product_Category_3']) in modes_two.keys():
+       row['Product_Category_2'] = modes_two[(row['Product_Category_1'], row['Product_Category_3'])]
+    elif row['Product_Category_2'] != -2 and row['Product_Category_3'] == -2 and\
+            (row['Product_Category_1'], row['Product_Category_2']) in modes_three.keys():
+        row['Product_Category_3'] = modes_three[(row['Product_Category_1'], row['Product_Category_2'])]
+
+    return row[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']]
 
 
 def impute_missing_vals(method, row, modes, tree_two, tree_three):

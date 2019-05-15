@@ -119,7 +119,7 @@ def modelfit(alg, data, features, target):
 if __name__ == '__main__':
 
     # Read in data.
-    df = pd.read_csv("data/BlackFriday_Modified_Interp.csv")
+    df = pd.read_csv("data/BlackFriday_Modified_Interp_Mode.csv")
     features = df.columns.drop(['Purchase', 'Product_ID', 'User_ID'])
 
     """
