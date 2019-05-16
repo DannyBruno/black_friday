@@ -1,6 +1,6 @@
 """
 
-Initial dataset preprocessing.
+Dataset preprocessing.
 
 """
 
@@ -63,36 +63,20 @@ def clean_data(row_data):
     return [gender, age, city_category, city_stay]
 
 
-
-def impute_missing_vals(method, row_data):
-    """
-    Data imputation methods.
-    """
-    # Try several methods for imputation.
-
-    # Method 0: Replace Nans w/ -2s.
-    if method == 0:
-        row_data.fillna(-2)
-
-    # Method 1: Predict using Network.
-    elif method == 1:
-        assert 0
-
-    # Method 2: Predict using KNN.
-    else:
-        assert 0
-
-    return row_data[['Product_Category_1', 'Product_Category_2', 'Product_Category_3']]
-
-
-
 def export(df):
+    """
+    Function to make it easier to export. Didn't really need.
+    """
     #df.to_csv('data/BlackFriday_Modified.csv', index=False)
     #df.to_csv('data/BlackFriday_Modified_Interp.csv', index=False)
     df.to_csv('data/BlackFriday_Modified_Interp_Mode.csv', index=False)
 
 
 def load_data():
+    """
+    Function loads in and cleans data. Imputes nan's with -2s and then tries one of two more sophisticated imputation methods.
+    Those methods are implementer in interpolation.py.
+    """
     # Import data.
     df = pd.read_csv("data/BlackFriday.csv") #nrows=10000
 

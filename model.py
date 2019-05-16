@@ -34,6 +34,9 @@ Network Model.
 '''
 
 def build_network(weights_path: str=''):
+    """
+    Yep, builds a simple network.
+    """
 
     input_tensor = Input(shape=(9,))
     one = Dense(32)(input_tensor)
@@ -61,6 +64,9 @@ Cross-Validation utilities.
 '''
 
 def report(results, n_top=1):
+    """
+    Prints best n CV results.
+    """
     for i in range(1, n_top + 1):
         candidates = np.flatnonzero(results['rank_test_score'] == i)
         for candidate in candidates:
@@ -70,7 +76,9 @@ def report(results, n_top=1):
 
 
 def dtr_cv(alg, X, y):
-
+    """
+    Perform CV for sklearn.tree.DecisionTreeRegressor. I don't think my computer has the power to used RandomizedSearchCV well.
+    """
     # Parameters to select from. # These don't work well.
     param_dist = {"max_depth": [3, 50],
                   "max_features": sp_randint(1, 9),
@@ -92,6 +100,9 @@ Modelling.
 '''
 
 def modelfit(alg, data, features, target):
+    """
+    Fit alg on data[features], (sometimes CV), and then predict on data[target]. Report results.
+    """
 
     # Split data into train and test.
     X_train, X_test, y_train, y_test = model_selection.train_test_split(data[features], data[target],
@@ -117,6 +128,11 @@ def modelfit(alg, data, features, target):
 
 
 if __name__ == '__main__':
+    """
+    Had big plans to hotencode all categorical, but my computer couldn't handle it, so regressions don't work well. 
+    Trees do alright though b/c they can handle the thresholding.
+    Best performance with RandomForestRegressor.
+    """
 
     # Read in data.
     df = pd.read_csv("data/BlackFriday_Modified_Interp_Mode.csv")
@@ -171,25 +187,6 @@ if __name__ == '__main__':
     print("Simple Network")
     modelfit(network, df, features, target)
     #plot_model(network, to_file='plots/model.png')
-    """
-
-    """
-    TODO: 
-        /- Add a network. 
-        - Do more sophisticated feature selection (Network and KNN feature imputation + more hotencoding for categorical).
-        /- Actually use the cross-validation for hyper-parameter tuning. 
-    """
-
-    """
-    Misc.
-     # For each one assess using cross val score.
-    cv_score = model_selection.cross_val_score(alg, X, y, cv=5, scoring='neg_mean_squared_error')
-    cv_score = np.sqrt(np.abs(cv_score))
-
-    print("CV Score: Mean - %.4g | Std - %.4g | Min - %.4g | Max - %.4g" % (
-    np.mean(cv_score), np.std(cv_score), np.min(cv_score), np.max(cv_score)))
-    # Do I want to pick the best one from cross-validation or do I want to graph and see where overfitting starts to occur? Should have same effect.
-# Decision tree CV. Max depth, min samples split, min samples leaf,
     """
 
 

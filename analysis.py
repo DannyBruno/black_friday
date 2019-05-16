@@ -15,7 +15,7 @@ mpl.style.use('seaborn')
 
 def univariate_analysis(df):
     """
-    Univariate.
+    Univariate. Plots found in /plots.
     """
 
     # Purchase amounts.
@@ -61,6 +61,9 @@ def univariate_analysis(df):
 
 
 def correlation(df):
+    """
+    Generate correlation matrix to visualize patterns in the data.
+    """
     numeric_features = df.select_dtypes(include=[np.number])
 
     corr = numeric_features.corr()
@@ -73,7 +76,9 @@ def correlation(df):
 
 
 def bivariate_analysis(df):
-
+    """
+    Bivariate.
+    """
     # Occupation and purchase amount.
     occupation_pivot = df.pivot_table(index='Occupation', values='Purchase', aggfunc=np.mean)
     occupation_pivot.plot(kind='bar', color='blue', figsize=(12, 7))

@@ -14,11 +14,9 @@ from sklearn import model_selection, metrics
 
 
 def vizualize_product_cat(df):
-    '''
-
-    Attempt to visualize in point cloud.
-
-    '''
+    """
+    Attempt to vizualize in point cloud. Are there correlations?
+    """
 
     # See single category distributions in analysis.py
 
@@ -109,6 +107,10 @@ def interpolation_model_fit(df, tree_two, tree_three):
 
 
 def interpolation_tree(row, tree_two, tree_three):
+    """
+    Function actually called from dataset.py. Takes in the two trees trained using interpolation_model_fit, and
+    uses them to predict missing values if 2/3 categories exist.
+    """
 
     if row['Product_Category_2'] == -2 and row['Product_Category_3'] != -2:
         row['Product_Category_2'] = tree_two.predict([[row['Product_Category_1'], row['Product_Category_3']]])[0] # Hopefully this is an np.array
@@ -119,6 +121,11 @@ def interpolation_tree(row, tree_two, tree_three):
 
 
 def interpolation_mode_setup(df, modes_two, modes_three):
+    """
+    Builds two dicts. For each dict keys are (Category_n1, Category_n2) and vals are the mode(Category_n3) of entries
+    that match on Category_n1 and Category_n2 from the keys.
+    Only operates on complete data entries (those that contain all 3 categories).
+    """
 
     # Select those with all 3 entries.
     data = df[
@@ -144,7 +151,6 @@ def interpolation_mode_setup(df, modes_two, modes_three):
 
 def interpolation_mode(row, modes_two, modes_three):
     '''
-    TODO: Compute missing value by taking mode in column with each.
     Given product categories 1 & 2 predict the 3rd by selecting the entries that include values in all 3 fields,
     and that match in category 1 & 2. Then assigns 3 to the mode of category 3 for those entries.
     Modes stores a hash table of [cat1, cat2] -> mode cat3 in entries that match on cat1 and cat2.
@@ -162,7 +168,7 @@ def interpolation_mode(row, modes_two, modes_three):
 
 def impute_missing_vals(method, row, modes, tree_two, tree_three):
     """
-    Potentially use to select which methods we want. Will most likely depricate.
+    Potentially use to select which methods we want. Will most likely deprecate.
     """
     # Try several methods for imputation.
     if method == 0:

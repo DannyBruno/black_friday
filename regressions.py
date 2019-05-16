@@ -16,6 +16,9 @@ mpl.style.use('seaborn')
 
 
 def select_features(df):
+    """
+    Train/test split. Doesn't really need to be set out like this but this was a first attempt.
+    """
 
     # 70/30 train/test.
     X_train, X_test = train_test_split(df[['Gender', 'Age', 'Occupation', 'City_Category', 'Marital_Status']], test_size=.3)
@@ -25,6 +28,9 @@ def select_features(df):
 
 
 def plot_results(y_test, y_predicted):
+    """
+    Helper function for visualizing performance.
+    """
 
     #print(f'Avg. distance between predictions and real values: {np.mean(np.abs(y_test - y_predicted))}')
 
@@ -41,6 +47,9 @@ def plot_results(y_test, y_predicted):
 
 
 def poly_regression(df, degree):
+    """
+    Function to perform regression of various degrees. Really was not the right data set for it in hindsight.
+    """
 
     X_train, X_test, y_train, y_test = select_features(df)
 
@@ -61,12 +70,3 @@ def poly_regression(df, degree):
 if __name__ == '__main__':
     poly_regression(pd.read_csv("data/BlackFriday.csv", nrows=50000), 1)
 
-
-
-"""
-Findings:
-
-Improves as we increase regression degree. Indicates that more complex estimator would help (networks, boosting etc.).
-We initially find that city category is a big predictor. What if we split for category?
-
-"""
